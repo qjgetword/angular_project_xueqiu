@@ -8,7 +8,7 @@ import { NewService } from 'src/app/service/new.service';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 
 import { AutoService } from 'src/app/service/auto.service';
 
@@ -27,7 +27,7 @@ export class IndexComponent implements OnInit {
 
   hostList = [];
 
-  myControl = new FormControl('');
+  myControl = new UntypedFormControl('');
   options: string[] = [];
   filteredOptions: Observable<string[]>;
 

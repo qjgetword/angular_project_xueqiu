@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AutoService } from '../../service/auto.service';
 import { ActivatedRoute } from '@angular/router';
 import {Observable} from 'rxjs';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {map, startWith} from 'rxjs/operators';
 
 
@@ -25,7 +25,7 @@ export class AutoComponent implements OnInit {
 
   hostList = [];
 
-  myControl = new FormControl('');
+  myControl = new UntypedFormControl('');
   filteredOptions: Observable<string[]>;
   options: string[] = ['One', 'Two', 'Three'];
 
