@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+
 import { AutoComponent } from './component/auto/auto.component';
 // import { HighchartsChartModule } from 'highcharts-angular';
 
@@ -43,6 +44,7 @@ import { AutoComponent } from './component/auto/auto.component';
     AdpageComponent,
     MapsComponent,
     AutoComponent,
+    
   ],
   // import HttpClientModule after BrowserModule.
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, BrowserAnimationsModule,
@@ -51,6 +53,7 @@ import { AutoComponent } from './component/auto/auto.component';
     MatAutocompleteModule,
     ReactiveFormsModule,
   ],
+  
   providers: [AppService],
   bootstrap: [AppComponent],
 })

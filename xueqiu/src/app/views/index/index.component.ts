@@ -15,13 +15,17 @@ import { AutoService } from 'src/app/service/auto.service';
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.less'],
 })
 
+
+
 export class IndexComponent implements OnInit {
+ 
   // 指数列表
   quoteList = [];
 
@@ -50,7 +54,8 @@ export class IndexComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     public server: NewService,
-    public autoserver: AutoService
+    public autoserver: AutoService,
+
   ) {
     // this.getData();
   }
