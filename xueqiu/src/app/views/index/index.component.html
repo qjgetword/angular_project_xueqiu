@@ -1,90 +1,32 @@
-<div class="main">
-  <div class="mainLeft">
-    <!-- 指数 -->
-    <div class="shishu">
-      <div class="zhushuList" [style]="{ transform: zhishuListPosition }">
-        <div
-          class="zhishuItem"
-          *ngFor="let item of quoteList"
-          [class]="{ reduce: item.quote.percent < 0 }"
-        >
-          <!-- 指数左边 -->
-          <div class="zhishuItemLeft">
-            <h3>{{ item.quote.name }}</h3>
-            <div>{{ item.quote.avg_price }}</div>
-            <p>{{ item.quote.chg + "(" + item.quote.percent + "%" + ")" }}</p>
-          </div>
-          <!-- 指数右边 -->
-          <div class="zhishuItemRight">
-            <div class="svg" [class]="{ down: item.quote.percent < 0 }">
-              <svg
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                style="width: 80px; height: 32.8px"
-              >
-                <path class="AverageLine" d="M0 20 L80 20"></path>
-                <path
-                  class="DataLine"
-                  d="M0 18 L0 19 L0 20 L0 19 L1 19 L1 16 L1 16 L2 17 L2 16 L2 16 L3 12 L3 14 L3 15 L4 18 L4 18 L4 19 L5 21 L5 19 L5 21 L6 20 L6 18 L6 15 L7 17 L7 17 L7 18 L8 17 L8 17 L8 17 L9 17 L9 15 L9 13 L10 11 L10 11 L10 10 L11 9 L11 10 L11 11 L12 10 L12 11 L12 10 L13 10 L13 11 L13 11 L14 10 L14 12 L14 13 L15 13 L15 14 L15 13 L16 13 L16 14 L16 13 L17 13 L17 13 L17 13 L18 14 L18 14 L18 14 L19 13 L19 12 L19 12 L20 13 L20 13 L20 12 L21 13 L21 14 L21 15 L22 14 L22 14 L22 13 L23 12 L23 13 L23 12 L24 11 L24 11 L24 12 L25 12 L25 13 L25 13 L26 14 L26 14 L26 14 L27 14 L27 14 L27 14 L28 14 L28 15 L28 14 L29 13 L29 13 L29 11 L30 10 L30 9 L30 9 L31 10 L31 10 L31 10 L32 11 L32 11 L32 11 L33 11 L33 11 L33 11 L34 11 L34 12 L34 11 L35 12 L35 10 L35 9 L36 9 L36 9 L36 9 L37 9 L37 9 L37 10 L38 10 L38 10 L38 10 L39 10 L39 9 L39 10 L40 9 L40 9 L40 10 L40 10 L41 12 L41 14 L41 15 L42 15 L42 14 L42 15 L43 16 L43 17 L43 16 L44 15 L44 15 L44 16 L45 16 L45 15 L45 13 L46 14 L46 12 L46 13 L47 13 L47 13 L47 14 L48 14 L48 14 L48 14 L49 15 L49 15 L49 16 L50 17 L50 16 L50 16 L51 16 L51 16 L51 17 L52 18 L52 18 L52 19 L53 19 L53 21 L53 20 L54 21 L54 22 L54 21 L55 21 L55 22 L55 22 L56 22 L56 23 L56 25 L57 26 L57 27 L57 28 L58 27 L58 26 L58 26 L59 27 L59 28 L59 31 L60 31 L60 32 L60 29 L61 30 L61 32 L61 32 L62 32 L62 32 L62 30 L63 31 L63 33 L63 34 L64 35 L64 35 L64 36 L65 35 L65 34 L65 33 L66 32 L66 31 L66 31 L67 31 L67 31 L67 32 L68 33 L68 34 L68 35 L69 35 L69 36 L69 36 L70 33 L70 32 L70 34 L71 34 L71 35 L71 35 L72 35 L72 35 L72 35 L73 34 L73 34 L73 34 L74 33 L74 32 L74 32 L75 32 L75 34 L75 34 L76 34 L76 34 L76 34 L77 35 L77 35 L77 34 L78 35 L78 34 L78 34 L79 34 L79 34 L79 35"
-                ></path>
-                0
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 三个小圆点 -->
-      <div class="circleList">
-        <div
-          class="circleItem"
-          (click)="toggleZhishu(0)"
-          [class]="{ active: circleActive === 0 }"
-        ></div>
-        <div
-          class="circleItem"
-          (click)="toggleZhishu(1)"
-          [class]="{ active: circleActive === 1 }"
-        ></div>
-        <div
-          class="circleItem"
-          (click)="toggleZhishu(2)"
-          [class]="{ active: circleActive === 2 }"
-        ></div>
-      </div>
+
+<div class="container my-5">
+  <div class="bg-light p-5 rounded">
+    <div class="col-sm-8 py-5 mx-auto">
+      <h1 class="display-5 fw-normal" style="text-align: center;">STOCK SEARCH</h1><br/><br/><br/><br/>
+      <p class="fs-5">
+        
+        <input type="search" class="form-control form-control-lg" placeholder="Search..." aria-label="Search" (ngModelChange)="onSearch($event)"  #searchword control-id="ControlID-3" (keyup.enter)="searchClick(searchword.value)" matInput
+        [formControl]="myControl"
+        [matAutocomplete]="auto"  >
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+        
+        
+        <!-- <button class='btn btn-md btn-primary d-inline search'>Search</button> -->
+        <button class="btn btn-outline-secondary border-left-0 border search-button" (click)="searchClick(searchword.value)" type="button">
+          <i class="fa fa-search"></i>
+        </button>
+        <button class="btn btn-outline-secondary border-left-0 border  times-button" type="button">
+        <i class="fa fa-times"></i>
+        </button>
+      </p>
     </div>
-  </div>
-  <!-- 右侧 -->
-  <div class="mainRight">
-    <div class="newsTab">
-      <div
-        class="tabBtn"
-        (click)="tabClick(0)"
-        [class]="{ tabActive: tabActiveIndex === 0 }"
-      >
-        推荐
-      </div>
-      <div
-        class="tabBtn"
-        (click)="tabClick(1)"
-        [class]="{ tabActive: tabActiveIndex === 1 }"
-      >
-        7*24
-      </div>
-      <div
-        class="tabBtn"
-        (click)="tabClick(2)"
-        [class]="{ tabActive: tabActiveIndex === 2 }"
-      >
-        沪深
-      </div>
-      <div
-        class="tabBtn"
-        (click)="tabClick(3)"
-        [class]="{ tabActive: tabActiveIndex === 3 }"
-      >
-        科创
-      </div>
-    </div>
-    <router-outlet></router-outlet>
   </div>
 </div>
+
+
+<router-outlet></router-outlet>
+

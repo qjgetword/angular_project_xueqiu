@@ -12,11 +12,21 @@ import { NotfoundComponent } from './views/notfound/notfound.component';
 import { DayinfoComponent } from './component/dayinfo/dayinfo.component';
 import { RecommendComponent } from './component/recommend/recommend.component';
 import { TotimePipe } from './pipe/totime.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './views/footer/footer.component';
 import { HeaderComponent } from './views/header/header.component';
 import { AdpageComponent } from './views/adpage/adpage.component';
 import { MapsComponent } from './views/maps/maps.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { AutoComponent } from './component/auto/auto.component';
+// import { HighchartsChartModule } from 'highcharts-angular';
+
+
 
 @NgModule({
   declarations: [
@@ -32,9 +42,15 @@ import { MapsComponent } from './views/maps/maps.component';
     HeaderComponent,
     AdpageComponent,
     MapsComponent,
+    AutoComponent,
   ],
   // import HttpClientModule after BrowserModule.
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+  ],
   providers: [AppService],
   bootstrap: [AppComponent],
 })

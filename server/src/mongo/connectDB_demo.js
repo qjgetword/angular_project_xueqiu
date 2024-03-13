@@ -35,6 +35,7 @@ MongoClient.connect(url, function (err, db) {
   //   db.close();
   // });
 
+
   // 插入多条数据
   // var dbo = db.db(dbName);
   // var myobj = [

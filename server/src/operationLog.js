@@ -21,6 +21,11 @@ const OperationLog = {
     CURD.creatDB(options);
   },
 
+  // 写日志
+  updateOperation: function updateOne(options) {
+    CURD.updateDB(options);
+  },
+
   // 删日志
   deleteOperationLog: function deleteLog(params) {
     return CURD.deleteDB(params);

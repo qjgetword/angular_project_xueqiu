@@ -27,6 +27,8 @@ const cookie = require("./cookie");
 // 监听端口
 const port = 8080;
 
+const finnhubkey = 'cnjcqopr01qkq94ge8fgcnjcqopr01qkq94ge8g0';
+
 // axios 全局配置
 // axios全局设置网络超时
 axios.defaults.timeout = 30 * 1000; // 30s
@@ -353,10 +355,16 @@ app.get("/api/screener/sxStock", async (req, res) => {
     });
 });
 
-// 获取数据库日志
+// get data
 app.get("/api/loginCenter/logList", async (req, res) => {
   const params = req.query;
-  const promise = OperationLog.getOperationLog(params);
+  const documentName = req.query.documentName;
+
+  const options = {
+    documentName: documentName,
+    params: { ...params, ip: getIp(req) },
+  };
+  const promise = OperationLog.getOperationLog(options);
   promise
     .then((result) => {
       res.json(result);
@@ -366,18 +374,70 @@ app.get("/api/loginCenter/logList", async (req, res) => {
     });
 });
 
-// 向数据库写数据
+// write
 app.post("/api/database/creat", async (req, res) => {
   const params = req.body;
 
-  const documentName = req.query.documentName;
+  resultReturn = [];
+
+  const documentName = 'watchlist';
   const options = {
     documentName: documentName,
     params: { ...params, ip: getIp(req) },
   };
+  // console.log(options);
   OperationLog.writeOperationLog(options);
   res.send("ok");
 });
+
+  // inital wallet
+  app.post("/api/database/initalWallet", async (req, res) => {
+    const params = req.body;
+  
+    resultReturn = [];
+  
+    const documentName = params.documentName;
+    const options = {
+      documentName: documentName,
+      params: { ...params.params, ip: getIp(req) },
+    };
+    // console.log(options);
+    OperationLog.writeOperationLog(options);
+    res.send("ok");
+  });
+
+  // update one
+  app.post("/api/database/update", async (req, res) => {
+    const params = req.body;
+  
+    resultReturn = [];
+  
+    const documentName = params.documentName;
+    const options = {
+      documentName: documentName,
+      params: { ...params.params, ip: getIp(req) },
+    };
+    // console.log(options);
+    OperationLog.updateOperation(options);
+    res.send("ok");
+  });
+
+  // delete data
+  app.post("/api/database/deteleData", async (req, res) => {
+    const params = req.body;
+  
+    resultReturn = [];
+  
+    const documentName = params.documentName;
+    const options = {
+      documentName: documentName,
+      params: { ...params.params, ip: getIp(req) },
+    };
+    console.log(options);
+    OperationLog.deleteOperationLog(options);
+    res.send("ok");
+  });
+
 
 // 获取广告消息
 app.get("/api/loginCenter/advertList", async (req, res) => {
@@ -396,7 +456,7 @@ app.get("/api/loginCenter/advertList", async (req, res) => {
     });
 });
 
-// 删除广告消息
+// delete
 app.delete("/api/loginCenter/deleteAdvert", async (req, res) => {
   const params = req.query;
   const documentName = "advert";
@@ -407,4 +467,148 @@ app.delete("/api/loginCenter/deleteAdvert", async (req, res) => {
 // 监听端口
 app.listen(port, () => {
   console.log("server start", "http://localhost:8080");
+});
+
+
+// finnhub search profile2
+app.get("/api/index/searchStock", (req, res) => {
+  const params = req.query;
+  const httpUrl = "https://finnhub.io/api/v1/stock/profile2?symbol="+params.key+"&token="+finnhubkey;
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 15,
+    },
+  });
+  promise
+    .then((result) => {
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+
+   
+  });
+
+
+// finnhub stock price quote
+app.get("/api/index/finnhubquote", (req, res) => {
+  const params = req.query;
+  const httpUrl = "https://finnhub.io/api/v1/quote?symbol="+params.key+"&token="+finnhubkey;
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 15,
+    },
+  });
+  promise
+    .then((result) => {
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+
+});
+
+//finnhub company peers
+app.get("/api/index/finnhubpeers", (req, res) => {
+  const params = req.query;
+  const httpUrl = "https://finnhub.io/api/v1/stock/peers?symbol="+params.key+"&token="+finnhubkey;
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 15,
+    },
+  });
+  promise
+    .then((result) => {
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+
+});
+
+  // 获取polygon
+app.get("/api/index/search/polygonaggs", (req, res) => {
+  const params = req.query;
+  const dt = new Date();
+  // 获取时间信息
+  const year = dt.getFullYear() // 2021
+  const month = dt.getMonth()+1 <10 ?  "0"+ (dt.getMonth()+1) : dt.getMonth()+1 // 8
+  const date = dt.getDate()-3<10 ? "0"+(dt.getDate()-3) : (dt.getDate()-3) // 23
+  let nextDate = dt.getDate()-1<10 ? "0"+(dt.getDate()-1) : (dt.getDate()-1) // 23
+
+  const httpUrl = "https://api.polygon.io/v2/aggs/ticker/"+params.key.toUpperCase()
+      +"/range/3/day/"+year+"-"+month+"-"+date+"/"+year+"-"+month+"-"+nextDate+"?adjusted=true&sort=asc&limit=120&apiKey=o2EmBqhojCYhKBvprIfrmVp3HioTffWh";
+  // console.log(httpUrl);
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 15,
+    },
+  });
+  promise
+    .then((result) => {
+      // console.log(result);
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+  });
+
+   // get marketstatus polygon
+app.get("/api/index/marketstatus", (req, res) => {
+
+  const httpUrl = "https://api.polygon.io/v1/marketstatus/now?apiKey=o2EmBqhojCYhKBvprIfrmVp3HioTffWh";
+
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 15,
+    },
+  });
+  promise
+    .then((result) => {
+      // console.log(result);
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+  });
+
+// finnhub 自动补全
+app.get("/api/index/autocom", (req, res) => {
+  const params = req.query;
+  const httpUrl = "https://finnhub.io/api/v1/search?q="+params.key+"&token="+finnhubkey;
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 100,
+    },
+  });
+  promise
+    .then((result) => {
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 });

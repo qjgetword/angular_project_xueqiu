@@ -1,12 +1,14 @@
 @import "../../../styles";
 
+
+
 .header {
   min-width: 960px;
   height: 58px;
   background-color: @themeBackgroundColor;
 
   .nav {
-    width: 960px;
+    // width: 960px;
     display: flex;
     height: 58px;
     justify-content: space-between;
@@ -14,6 +16,7 @@
     align-items: center;
 
     .log {
+
       img {
         height: 30px;
         width: auto;
@@ -40,30 +43,5 @@
         outline: none;
       }
     }
-
-    .search {
-      width: 300px;
-      height: 30px;
-      line-height: 30;
-      border-radius: 15px;
-      padding: 0 15px;
-      background: #fff;
-      display: flex;
-
-      input {
-        border: none;
-        outline: none;
-        width: 270px;
-      }
-
-      .searchIcon {
-        width: 30px;
-        height: 30px;
-        background-image: url("../../../assets/images/Search.png");
-        background-size: 80% 80%;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-    }
-  }
+  }  
 }

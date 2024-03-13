@@ -126,3 +126,40 @@
     }
   }
 }
+
+
+.fs-5 {
+  position: relative;
+  box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+    .search-button {
+      position: absolute;
+      top:10%;
+      right: 40px;
+      // height: 100%;
+      // width: 110px;
+      // background: blue
+      display: none;
+    }
+    .times-button {
+      position: absolute;
+      top: 10%;
+      right: 0px;
+      display: none;
+      // height: 47px;
+      // // width: 110px;
+      // // background: blue
+    }
+    input:focus {
+      box-shadow: none;
+      border: 2px solid #1369bf;
+    }
+    // .fa-search {
+    //   position: absolute;
+    //   top: 20px;
+    //   left: 16px
+    // }
+  }
+  .fs-5:hover {
+    .search-button { display: inline;}
+    .times-button { display: inline;}
+  }

@@ -11,19 +11,29 @@ import { DayinfoComponent } from './component/dayinfo/dayinfo.component';
 import { RecommendComponent } from './component/recommend/recommend.component';
 import { AdpageComponent } from './views/adpage/adpage.component';
 import { MapsComponent } from './views/maps/maps.component';
+import { AutoComponent } from './component/auto/auto.component';
+
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/index',
+    redirectTo: '/search',
     pathMatch: 'full',
   },
   {
-    path: 'index',
+    path: 'search',
     component: IndexComponent,
     children: [
       {
-        path: 'recommend',
+        path: 'home',
+        component: RecommendComponent,
+      },
+      {
+        path: 'autoc',
+        component: AutoComponent,
+      },
+      {
+        path: ':ticker',
         component: RecommendComponent,
       },
       {
@@ -40,6 +50,7 @@ const routes: Routes = [
       },
     ],
   },
+  {path: 'search/:ticker', component: RecommendComponent},
   {
     path: 'screener',
     component: ChooseComponent,
@@ -65,7 +76,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forRoot(routes, { useHash: false })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

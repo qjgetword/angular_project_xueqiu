@@ -130,19 +130,56 @@ export class NewService {
     const httpUrl = this.baseUrl + '/api/loginCenter/logList';
     let promise;
     try {
-      promise = await axios.get(httpUrl, { params: options.params });
+      // console.log(options);
+      promise = await axios.get(httpUrl, { params: options });
     } catch (error) {
       throw error;
     }
     return promise.data;
   }
 
-  // 写写数据
+  // write data
   async creatData(options): Promise<any> {
     const httpUrl = this.baseUrl + '/api/database/creat';
     let promise;
     try {
-      promise = await axios.post(httpUrl, { ...options.params });
+      promise = await axios.post(httpUrl, { params: options });
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  // write data i 
+  async creatDataI(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/database/initalWallet';
+    let promise;
+    try {
+      promise = await axios.post(httpUrl, options);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  // update data
+  async updateData(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/database/update';
+    let promise;
+    try {
+      promise = await axios.post(httpUrl, options);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  // write data i 
+  async deteleData(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/database/deteleData';
+    let promise;
+    try {
+      promise = await axios.post(httpUrl, options);
     } catch (error) {
       throw error;
     }
@@ -166,6 +203,70 @@ export class NewService {
     let promise;
     try {
       promise = await axios.delete(httpUrl, { params: options });
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+  //finnhub profile
+  async searchStock(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/searchStock';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  //finnhub profile
+  async finhubPeers(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/finnhubpeers';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  //finnhub stock
+  async finnhubQuote(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/finnhubquote';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  //搜索polygonaggs
+  async polygonAggs(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/search/polygonaggs';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  //marketstatus
+  async marketStatus(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/marketstatus';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
     } catch (error) {
       throw error;
     }
