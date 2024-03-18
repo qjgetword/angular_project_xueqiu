@@ -406,7 +406,7 @@ app.post("/api/database/creat", async (req, res) => {
     res.send("ok");
   });
 
-  // update one
+  // update 
   app.post("/api/database/update", async (req, res) => {
     const params = req.body;
   
@@ -417,8 +417,25 @@ app.post("/api/database/creat", async (req, res) => {
       documentName: documentName,
       params: { ...params.params, ip: getIp(req) },
     };
-    // console.log(options);
+
     OperationLog.updateOperation(options);
+    res.send("ok");
+  });
+
+  // update one
+  app.post("/api/database/updateOne", async (req, res) => {
+    const params = req.body;
+  
+    resultReturn = [];
+
+    const documentName = params.documentName;
+    const options = {
+      documentName: documentName,
+      data: params.data ,
+      filter: params.filter 
+    };
+
+    OperationLog.updateOneOperation(options);
     res.send("ok");
   });
 
@@ -433,8 +450,38 @@ app.post("/api/database/creat", async (req, res) => {
       documentName: documentName,
       params: { ...params.params, ip: getIp(req) },
     };
-    console.log(options);
     OperationLog.deleteOperationLog(options);
+    res.send("ok");
+  });
+
+  // delete 
+  app.post("/api/database/del", async (req, res) => {
+    const params = req.body;
+  
+    resultReturn = [];
+  
+    const documentName = params.documentName;
+    const options = {
+      documentName: documentName,
+      params: { ...params.params, ip: getIp(req) },
+    };
+    OperationLog.delOperationLog(options);
+    res.send("ok");
+  });
+
+  // delete 
+  app.post("/api/database/delMany", async (req, res) => {
+    const params = req.body;
+  
+    resultReturn = [];
+    const documentName = params.documentName;
+    const options = {
+      documentName: documentName,
+      params: { 
+        ...params.params },
+    };
+
+    OperationLog.delManyOperationLog(options);
     res.send("ok");
   });
 
@@ -549,7 +596,7 @@ app.get("/api/index/search/polygonaggs", (req, res) => {
   let nextDate = dt.getDate()-1<10 ? "0"+(dt.getDate()-1) : (dt.getDate()-1) // 23
 
   const httpUrl = "https://api.polygon.io/v2/aggs/ticker/"+params.key.toUpperCase()
-      +"/range/3/day/"+year+"-"+month+"-"+date+"/"+year+"-"+month+"-"+nextDate+"?adjusted=true&sort=asc&limit=120&apiKey=o2EmBqhojCYhKBvprIfrmVp3HioTffWh";
+      +"/range/3/day/"+year+"-"+month+"-"+date+"/"+year+"-"+month+"-"+nextDate+"?adjusted=true&sort=asc&limit=1&apiKey=o2EmBqhojCYhKBvprIfrmVp3HioTffWh";
   // console.log(httpUrl);
   const promise = axios.get(httpUrl, {
     ...options,
@@ -568,6 +615,32 @@ app.get("/api/index/search/polygonaggs", (req, res) => {
       res.send(err);
     });
   });
+
+ // get summary charts
+ app.get("/api/index/search/polygonaggsticker", (req, res) => {
+  const params = req.query;
+  const httpUrl = "https://api.polygon.io/v2/aggs/ticker/"+params.ticker
+      +"/range/"+params.day+"/"+params.range+"/"+params.from+"/"+params.to+"?adjusted=true&sort=asc&apiKey=o2EmBqhojCYhKBvprIfrmVp3HioTffWh";
+
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 15,
+    },
+  });
+  promise
+    .then((result) => {
+      // console.log(result);
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+  });
+
+  
 
    // get marketstatus polygon
 app.get("/api/index/marketstatus", (req, res) => {
@@ -592,6 +665,7 @@ app.get("/api/index/marketstatus", (req, res) => {
     });
   });
 
+
 // finnhub 自动补全
 app.get("/api/index/autocom", (req, res) => {
   const params = req.query;
@@ -612,3 +686,113 @@ app.get("/api/index/autocom", (req, res) => {
       res.send(err);
     });
 });
+
+// finnhub autocompelete
+app.get("/api/index/autocom", (req, res) => {
+  const params = req.query;
+  const httpUrl = "https://finnhub.io/api/v1/search?q="+params.key+"&token="+finnhubkey;
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 100,
+    },
+  });
+  promise
+    .then((result) => {
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+// finnhub news
+app.get("/api/index/companynews", (req, res) => {
+  const params = req.query;
+  const httpUrl = "https://finnhub.io/api/v1/company-news?symbol="+params.ticker+'&from='+params.from+'&to='+params.to+"&token="+finnhubkey;
+  console.log(httpUrl);
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 100,
+    },
+  });
+  promise
+    .then((result) => {
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+  // get insider-sentiment polygon https://finnhub.io/api/v1/stock/insider-sentiment?symbol=<TICKER>&from=2022-01-01&token=<API_KEY></API_KEY>
+  app.get("/api/index/search/insider", (req, res) => {
+  const params = req.query;
+  const httpUrl = " https://finnhub.io/api/v1/stock/insider-sentiment?symbol="+params.ticker+"&from="+params.from+"&token="+finnhubkey;
+  const promise = axios.get(httpUrl, {
+    ...options,
+    params: {
+      since_id: -1,
+      max_id: -1,
+      size: 15,
+    },
+  });
+  promise
+    .then((result) => {
+      // console.log(result);
+      res.json(result.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+  });
+
+  //get recommendation https://finnhub.io/api/v1/stock/recommendation?symbol=<TICKER>&token=<API_KEY>
+  app.get("/api/index/search/recommendation", (req, res) => {
+    const params = req.query;
+    const httpUrl = " https://finnhub.io/api/v1/stock/recommendation?symbol="+params.ticker+"&token="+finnhubkey;
+    const promise = axios.get(httpUrl, {
+      ...options,
+      params: {
+        since_id: -1,
+        max_id: -1,
+        size: 15,
+      },
+    });
+    promise
+      .then((result) => {
+        // console.log(result);
+        res.json(result.data);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+    });
+
+  // get company Earning https://finnhub.io/api/v1/stock/earnings?symbol=MSFT&token=<API_KEY>
+  app.get("/api/index/search/earning", (req, res) => {
+    const params = req.query;
+    const httpUrl = " https://finnhub.io/api/v1/stock/earnings?symbol="+params.ticker+"&token="+finnhubkey;
+    const promise = axios.get(httpUrl, {
+      ...options,
+      params: {
+        since_id: -1,
+        max_id: -1,
+        size: 15,
+      },
+    });
+    promise
+      .then((result) => {
+        // console.log(result);
+        res.json(result.data);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+    });
+

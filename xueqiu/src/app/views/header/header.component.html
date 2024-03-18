@@ -12,86 +12,16 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link"  aria-current="page" routerLinkActive="active" [routerLink]="['/search','home']">Search</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/watchlist']">WatchList</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/protfolio']">Protfolio</a>
           </li>
         </ul>
-         <form class="d-flex mt-3 mt-lg-0" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form> 
       </div>
     </div>
   </div>
 </nav>
-
-
-
-
-
-
-
-<!-- <div class="header">
-  <nav class="nav navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
-    <div class="log" style="color: white;padding-left: 12px;">
-      Stock Search
-    </div>
-    <div class="navlist">
-      <div
-        class="navitem"
-        [routerLink]="['/index']"
-        routerLinkActive="route-active"
-      >
-        首页
-      </div>
-      <div
-        class="navitem"
-        [routerLink]="['/screener']"
-        routerLinkActive="route-active"
-      >
-        股票筛选
-      </div>
-      <div
-        class="navitem"
-        [routerLink]="['/newStock']"
-        routerLinkActive="route-active"
-      >
-        api日志
-      </div>
-      <div
-        class="navitem"
-        [routerLink]="['/advertisement']"
-        routerLinkActive="route-active"
-      >
-        增删改查
-      </div>
-      <div
-        class="navitem"
-        [routerLink]="['/maps']"
-        routerLinkActive="route-active"
-      >
-        maps
-      </div>
-    </div>
- 搜索框 
-    <div class="search">
-      <input type="text" placeholder="请输入搜索的内容" />
-      <span class="searchIcon"></span>
-    </div>
-  </nav>
-</div> -->

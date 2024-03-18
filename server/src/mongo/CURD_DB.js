@@ -24,7 +24,7 @@ const CURD_DB = {
         status: 1,
       } || {};
     try {
-      conn = await MongoClient.connect(url,{useUnifiedTopology: true});
+      conn = await MongoClient.connect(url);
       const test = conn.db(dbName).collection(document_name);
       // 增加
       await test.insertOne(data);
@@ -42,13 +42,19 @@ const CURD_DB = {
       {
         ...options.params,
         time: time,
+      } || {};
+    const filter =
+      {
+        ip:options.params.ip,
         status: 1,
       } || {};
+
     try {
-      conn = await MongoClient.connect(url,{useUnifiedTopology: true});
+      conn = await MongoClient.connect(url);
       const test = conn.db(dbName).collection(document_name);
       // 增加
-      await test.insertOne(data);
+      // console.log(data);
+      await test.updateOne(filter,{$set:data});
     } catch (error) {
       console.log("错误：" + error);
     } finally {
@@ -88,19 +94,99 @@ const CURD_DB = {
     try {
       conn = await MongoClient.connect(url);
       const test = conn.db(dbName).collection(document_name);
-
       const data =
       {
-        ...params.params,
+        ...params.params
       }
       console.log(data);
       // 更新
-      const arr = await test.deleteMany(data);
+      let ldata = { 
+        params: {
+
+          
+          documentName: 'watchlist',
+        },
+
+      };
+      const arr = await test.deleteMany(ldata);
+
+      return arr;
+    } catch (error) {
+      // console.log("错误：" + error);
+    } finally {
+      // console.log("结束");
+      if (conn != null) conn.close();
+    }
+  },
+  del: async function (params) {
+    let conn = null;
+    const document_name = params.documentName || documentName;
+
+    try {
+      conn = await MongoClient.connect(url);
+      mongo = require('mongodb')
+      const test = conn.db(dbName).collection(document_name);
+
+      const arr = await test.deleteOne({ _id: new mongo.ObjectId(params.params._id) });
+
       return arr;
     } catch (error) {
       console.log("错误：" + error);
     } finally {
       console.log("结束");
+      if (conn != null) conn.close();
+    }
+  },
+
+  delMany: async function (params) {
+    let conn = null;
+    const document_name = params.documentName || documentName;
+
+    try {
+      conn = await MongoClient.connect(url);
+      mongo = require('mongodb')
+      const test = conn.db(dbName).collection(document_name);
+
+      let deleteMany_ids = []; 
+
+      Object.keys(params.params).forEach(v => {
+        deleteMany_ids.push(
+          new mongo.ObjectId(params.params[v])
+        );
+      })
+
+      const arr = await test.deleteMany({_id: { $in: deleteMany_ids}});
+      return arr;
+    } catch (error) {
+      console.log("错误：" + error);
+    } finally {
+      console.log("结束");
+      if (conn != null) conn.close();
+    }
+  },
+  updateOne: async function (options) {
+    let conn = null;
+    const document_name = options.documentName || documentName;
+    const time = Date.now();
+    mongo = require('mongodb')
+    const data ={
+      ...options.data,
+      time: time,
+    } || {};
+    const filter ={
+      ...options.filter,
+      status: 1,
+    } || {};
+    filter._id = new mongo.ObjectId(filter._id);
+    try {
+      conn = await MongoClient.connect(url);
+      const test = conn.db(dbName).collection(document_name);
+      // 增加
+      // console.log(data);
+      await test.updateOne(filter,{$set:data});
+    } catch (error) {
+      console.log("错误：" + error);
+    } finally {
       if (conn != null) conn.close();
     }
   },

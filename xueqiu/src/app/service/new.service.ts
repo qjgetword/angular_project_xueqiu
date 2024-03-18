@@ -174,9 +174,44 @@ export class NewService {
     return promise.data;
   }
 
-  // write data i 
+  // update one
+  async updateOne(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/database/updateOne';
+    let promise;
+    try {
+      promise = await axios.post(httpUrl, options);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  // del data 
   async deteleData(options): Promise<any> {
     const httpUrl = this.baseUrl + '/api/database/deteleData';
+    let promise;
+    try {
+      promise = await axios.post(httpUrl, options);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+  // del watchlist
+  async del(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/database/del';
+    let promise;
+    try {
+      promise = await axios.post(httpUrl, options);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  // delMany
+  async delMany(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/database/delMany';
     let promise;
     try {
       promise = await axios.post(httpUrl, options);
@@ -221,7 +256,7 @@ export class NewService {
     return promise.data;
   }
 
-  //finnhub profile
+  //finnhub peers
   async finhubPeers(options): Promise<any> {
     const httpUrl = this.baseUrl + '/api/index/finnhubpeers';
     let promise;
@@ -233,6 +268,19 @@ export class NewService {
     }
     return promise.data;
   }
+
+  async companyNews(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/companynews';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
 
   //finnhub stock
   async finnhubQuote(options): Promise<any> {
@@ -260,9 +308,61 @@ export class NewService {
     return promise.data;
   }
 
+  //polygonaggs ticker
+  async polygonAggsTicker(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/search/polygonaggsticker';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
   //marketstatus
   async marketStatus(options): Promise<any> {
     const httpUrl = this.baseUrl + '/api/index/marketstatus';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  //finnhub insider
+  async insider(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/search/insider';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  //finnhub recommendation
+  async recommendation(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/search/recommendation';
+    let promise;
+    try {
+      promise = await axios.get(httpUrl,{ params: options });
+      // console.log(promise);
+    } catch (error) {
+      throw error;
+    }
+    return promise.data;
+  }
+
+  //finnhub earning
+  async earning(options): Promise<any> {
+    const httpUrl = this.baseUrl + '/api/index/search/earning';
     let promise;
     try {
       promise = await axios.get(httpUrl,{ params: options });

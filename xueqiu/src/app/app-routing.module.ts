@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-// 导入组件
 import { IndexComponent } from './views/index/index.component';
-import { ChooseComponent } from './views/choose/choose.component';
 import { NewstockComponent } from './views/newstock/newstock.component';
 import { NotfoundComponent } from './views/notfound/notfound.component';
 
@@ -12,6 +10,8 @@ import { RecommendComponent } from './component/recommend/recommend.component';
 import { AdpageComponent } from './views/adpage/adpage.component';
 import { MapsComponent } from './views/maps/maps.component';
 import { AutoComponent } from './component/auto/auto.component';
+import { WatchlistComponent } from './component/watchlist/watchlist.component';
+import { ProtfolioComponent } from './component/protfolio/protfolio.component';
 
 
 const routes: Routes = [
@@ -25,6 +25,10 @@ const routes: Routes = [
     component: IndexComponent,
     children: [
       {
+        path: ':ticker',
+        component: RecommendComponent,
+      },
+      {
         path: 'home',
         component: RecommendComponent,
       },
@@ -32,10 +36,7 @@ const routes: Routes = [
         path: 'autoc',
         component: AutoComponent,
       },
-      {
-        path: ':ticker',
-        component: RecommendComponent,
-      },
+      
       {
         path: 'liveNews',
         component: DayinfoComponent,
@@ -50,10 +51,13 @@ const routes: Routes = [
       },
     ],
   },
-  {path: 'search/:ticker', component: RecommendComponent},
   {
-    path: 'screener',
-    component: ChooseComponent,
+    path: 'watchlist',
+    component: WatchlistComponent,
+  },
+  {
+    path: 'protfolio',
+    component: ProtfolioComponent,
   },
   {
     path: 'newStock',
@@ -71,7 +75,7 @@ const routes: Routes = [
   // 404
   {
     path: '**',
-    component: NotfoundComponent,
+    component: IndexComponent,
   },
 ];
 

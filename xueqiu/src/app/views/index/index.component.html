@@ -1,10 +1,8 @@
-
-<div class="container my-5">
-  <div class="bg-light p-5 rounded">
-    <div class="col-sm-8 py-5 mx-auto">
-      <h1 class="display-5 fw-normal" style="text-align: center;">STOCK SEARCH</h1><br/><br/><br/><br/>
+<div class="container ">
+  <div class="p-5 rounded">
+    <div class="col-sm-7 py-3 mx-auto">
+      <h1 class="display-5 fw-normal text-center" >STOCK SEARCH</h1><br/><br/><br/>
       <p class="fs-5">
-        
         <input type="search" class="form-control form-control-lg" placeholder="Search..." aria-label="Search" (ngModelChange)="onSearch($event)"  #searchword control-id="ControlID-3" (keyup.enter)="searchClick(searchword.value)" matInput
         [formControl]="myControl"
         [matAutocomplete]="auto"  >
@@ -13,8 +11,6 @@
             {{option}}
           </mat-option>
         </mat-autocomplete>
-        
-        
         <!-- <button class='btn btn-md btn-primary d-inline search'>Search</button> -->
         <button class="btn btn-outline-secondary border-left-0 border search-button" (click)="searchClick(searchword.value)" type="button">
           <i class="fa fa-search"></i>

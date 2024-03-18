@@ -36,7 +36,6 @@ export class IndexComponent implements OnInit {
   filteredOptions: Observable<string[]>;
 
 
-
   private search$ = new Subject<string>();
 
 
@@ -61,23 +60,22 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // 设置默认路由
-    // 路由跳转
-    this.router.navigate(['search', 'home'], {
-      // queryParams: {
-      //   key: 'recommend',
-      // },
-    });
+    this.route.params.subscribe((data: any) => {
+
+      let urlParams = this.router.url.split('/');
+      if(urlParams[1] != 'search' || urlParams[2] == undefined){
+        this.router.navigate(['search', 'home']);
+      }
+    })
 
     this.search$.pipe(debounceTime(500)).subscribe(value => {
-      // API
+      if(value.length > 1){
+        
       var params = {key:value};
-    // console.log(params);
     
       const promise = this.autoserver.autoComplate(params);
       promise
         .then((result) => {
-          //换成数组
           let arr = [];  
           if(result['result'][0] instanceof Object){
             arr.push(result['result'][0]['displaySymbol'] + ' | '+ result['result'][0]['description'],
@@ -100,6 +98,7 @@ export class IndexComponent implements OnInit {
           // console.log(err);
           throw err;
         });
+      }
     })
   }
   

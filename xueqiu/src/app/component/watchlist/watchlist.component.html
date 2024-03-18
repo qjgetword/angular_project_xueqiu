@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="container  text-left">
+        <div class="row ">
+          <div class="col">
+           <div class="p-3"><h1><strong></strong></h1></div>
+          </div>
+        </div>
+      </div>
+    <div class="p-4"><h1><strong>My WatchList</strong></h1></div>
+</div>
+<div class="container" *ngIf="(watchlist[0] | json) == '[]'">
+    <div class="alert alert-warning alert-dismissible fade show d-flex justify-content-center" role="alert" role="alert">
+      Currently you don't have any stock in your watchlist.
+    </div>
+</div>
+
+<div class="container" *ngIf="(watchlist[0] | json) != '{}' &&  watchlist[0]?.length != 0 ">
+  <div class="card" *ngFor="let list of watchlist">
+    <div class="card-body">
+      <div class="container text-left">
+        <button type="button" class="btn-close" aria-label="Close" (click)="delWatchlist(list._id)"></button>
+        <a [routerLink]="['/search',list.params.params.ticker]">
+        <div class="row">
+          <div class="col">
+            <span><h2>{{list.params.params.ticker}}</h2></span>
+            <span><h3>{{list.params.params.name}}</h3></span>
+          </div>
+          <div class="col" [ngClass]="{'text-success':list.params.params.price>0,'text-dark':list.params.params.price==0,'text-danger':list.params.params.price<0}">
+            <span></span><br />
+            <span ><h1>{{list.params.params.vw}}</h1></span>
+            <span>{{list.params.params.price}} ({{list.params.params.percent}}%)</span>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+

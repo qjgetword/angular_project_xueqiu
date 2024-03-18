@@ -25,7 +25,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
 import { AutoComponent } from './component/auto/auto.component';
-// import { HighchartsChartModule } from 'highcharts-angular';
+import { HighchartsChartModule } from 'highcharts-angular';
+
 
 
 
@@ -52,6 +53,7 @@ import { AutoComponent } from './component/auto/auto.component';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
+    HighchartsChartModule
   ],
   
   providers: [AppService],

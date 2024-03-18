@@ -1,0 +1,168 @@
+
+<div class="container">
+    <div class="container  text-left">
+        <div class="row ">
+          <div class="col">
+           <div class="p-3"><h1><strong></strong></h1></div>
+          </div>
+        </div>
+      </div>
+      <div class="row ">
+          <div class="col">
+           <div class="p-2"><h1><strong></strong></h1></div>
+          </div>
+        </div>
+        <div class="container-xl" *ngIf="buyResult === true">
+          <div class="alert alert-success alert-dismissible fade show d-flex justify-content-center" [ngClass]="successClass" role="alert" role="alert" *ngIf="buyTicker.length > 0">
+            {{protfolio[buyTicker]?.ticker}} {{buySuccess}} Successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+    <div class="p-1"><h1>My Protfolio</h1></div>
+    <div class="p-1"><h3 *ngIf="walletmoney > 0">Money in Wallet: ${{walletmoney}}</h3></div>
+</div>
+
+<div class="container" *ngIf="(protfolio | json) == '[]'">
+    <div class="alert alert-warning alert-dismissible fade show d-flex justify-content-center" role="alert" role="alert">
+      Currently you don't have any stock.
+    </div>
+</div>
+<div class="container" *ngIf="walletmoney === -1">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+
+<div class="container" *ngIf="protfolioKey?.length > 0 ">
+    <div class="card text-left mb-4" *ngFor="let key of protfolioKey">
+        <div class="card-header">
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item mb-0"><div class="h4" ><strong>{{protfolio[key].ticker}}</strong></div></li>
+                <li class="list-inline-item mb-0">{{protfolio[key].name}}</li>
+            </ul>
+        </div>
+        <div class="card-body">
+        <!-- <h5 class="card-title">{{element.ticker}}</h5> -->
+
+            <div class="card container text-left border-0">
+                <div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-3 text-dark">
+                  <div class="col">
+                    <div class="">Quantity:</div>
+                  </div>
+                  <div class="col">
+                    <div class="">{{protfolio[key].quantity}}</div>
+                  </div>
+                  <div class="col">
+                    <div class="">Change:</div>
+                  </div>
+                  <div class="col" [ngClass]="protfolio[key].class">
+                    <div class="">{{protfolio[key].change}}</div>
+                  </div>
+                  <div class="col">
+                    <div class="">Avg.Cost / Share:</div>
+                  </div>
+                  <div class="col">
+                    <div class="">{{protfolio[key].avg}}</div>
+                  </div>
+                  <div class="col">
+                    <div class="">Current Price:</div>
+                  </div>
+                  <div class="col">
+                    <div class="" [ngClass]="protfolio[key].class">{{protfolio[key].currentPrice}}</div>
+                  </div>
+                  <div class="col">
+                    <div class="">Total Cost:</div>
+                  </div>
+                  <div class="col">
+                    <div class="">{{protfolio[key].total}}</div>
+                  </div>
+                  <div class="col">
+                    <div class="">Market Value:</div>
+                  </div>
+                  <div class="col">
+                    <div class="" [ngClass]="protfolio[key].class">{{(protfolio[key].currentPrice * protfolio[key].quantity).toFixed(2)}}</div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+          <button type="button" (click)="buyModal(protfolio[key].ticker,quantity.value)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#buyModal">Buy</button> &nbsp;&nbsp;&nbsp;
+          <button type="button" (click)="buyModal(protfolio[key].ticker,quantitysell.value)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#sellModal">Sell</button>
+        </div>
+    </div><br /><br />
+</div>
+
+<div class="container" *ngIf="isLoading === true">
+    <!-- <div class="card text-left" > -->
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    <!-- </div> -->
+</div>
+
+<div class="modal fade" id="buyModal" tabindex="-1" aria-labelledby="buyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="buyModalLabel" *ngIf="buyTicker.length > 0"><a [routerLink]="['/search',protfolio[buyTicker]?.ticker]">{{protfolio[buyTicker]?.ticker}}</a></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" >
+        <form ng-app="myApp" ng-controller="validateCtrl" name="myForm">
+          <div class="row mb-3">
+            <h4 *ngIf="buyTicker.length">Current Price: {{protfolio[buyTicker]?.currentPrice}}</h4>
+            <h4 *ngIf="buyTicker.length">Money in Wallet: {{walletmoney}}</h4>
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Quantity: </label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" #quantity name="quuantity" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" ng-model="quuantity" required (input)="calculateBuyQuantity(quantity.value)" min="0" oninput="if(value<0)value=0;" [value]="bsInput">
+            </div>
+            <h4 *ngIf="buytotal > walletmoney" style="color: red;">
+              Not Enough Money in Wallet!
+            </h4>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <h4 class="align-baseline">Total: {{this.buytotal}} </h4>
+        <button type="button" class="btn btn-success btn"  [disabled]="buytotal > walletmoney || buytotal == 0 || quantity.value == '0' ? 'disabled': null" (click)="buy(quantity.value,buyTicker);" data-bs-dismiss="modal" aria-label="Close">buy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="sellModal" tabindex="-1" aria-labelledby="sellModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="sellModalLabel" *ngIf="buyTicker.length > 0"><a [routerLink]="['/search',protfolio[buyTicker]?.ticker]">{{protfolio[buyTicker]?.ticker}}</a></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" >
+        <form ng-app="sell" ng-controller="validateCtrl" name="sell">
+          <div class="row mb-3">
+            <h4 *ngIf="buyTicker.length">Current Price: {{protfolio[buyTicker]?.currentPrice}}</h4>
+            <h4 *ngIf="buyTicker.length">Money in Wallet: {{walletmoney}}</h4>
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Quantity: </label>
+            <div class="col-sm-10" >
+              <input type="number" class="form-control" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')"  #quantitysell name="quantitysell" ng-model="quantitysell" required (input)="calculateBuyQuantity(quantitysell.value)" min="0" oninput="if(value<0)value=0;" value="{{bsInput}}">
+              <div *ngIf="buyTicker.length">
+              <h4 *ngIf="quantitysell.value > protfolio[buyTicker]?.quantity" style="color: red;">
+                You can not sell the stocks that you don't have!
+              </h4>
+            </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" *ngIf="buyTicker.length">
+        <h4 class="align-baseline" >Total: {{this.buytotal}} </h4>
+        <button type="button" class="btn btn-success btn" [disabled]="quantitysell.value > protfolio[buyTicker]?.quantity || buytotal == 0 || quantitysell.value == '0' ? 'disabled': null" (click)="sell(quantitysell.value,buyTicker);" data-bs-dismiss="modal" aria-label="Close">sell</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

@@ -7,9 +7,11 @@ import { AppService } from 'src/app/app.service';
   styleUrls: ['./header.component.less'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  constructor( ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+  }
 
   imageConvert(url): string {
     return AppService.imageConvert(url);

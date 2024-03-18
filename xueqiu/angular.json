@@ -80,19 +80,19 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "xueqiu:build",
-            "proxyConfig": "./proxy.conf.json"
+            "proxyConfig": "./proxy.conf.json",
+            "buildTarget": "xueqiu:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "xueqiu:build:production"
+              "buildTarget": "xueqiu:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "xueqiu:build"
+            "buildTarget": "xueqiu:build"
           }
         },
         "test": {

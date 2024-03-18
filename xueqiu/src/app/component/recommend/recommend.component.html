@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<div class="album py-5 bg-light" *ngIf="hostList['ticker']">
+<div class="album py-4" *ngIf="hostList['ticker']">
   <div class="container">
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -37,9 +37,8 @@
 
       </div>
       <div class="col">
-        <div class="card shadow-sm">
-          <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
-          <img src="{{hostList['logo']}}">
+        <div class="card border-0 align-items-center">
+          <img style="height: 200px;width: 200px;" src="{{hostList['logo']}}">
           
         </div>
         <p>
@@ -69,6 +68,14 @@
     </div>
   </div>
 </div>
+
+<div class="container-xl" *ngIf="hostList['f'] == true">
+  <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-center" role="alert" role="alert">
+    No data found. Please enter a valid Ticker
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+
 
 <div class="container" *ngIf="hostList['ticker']">
   <!-- Content here -->
@@ -113,7 +120,65 @@
       </div>
     </div>
     <div class="col">
-      Column
+      <div *ngIf="(coption | json) != '{}'">
+        <highcharts-chart 
+          [Highcharts]="Highcharts"
+          [options]="coption"
+          [constructorType]="chartConstructor"
+          style="width: 100%; height: 400px; display: block;"
+        ></highcharts-chart>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="container text-center" *ngIf="topNews.length > 0  && tabs=='Top News'">
+  <div class="row g-{{topNews.length}} mt-2">
+    <div class="col-6" *ngFor="let news of topNews;let n=index" >
+      <a href="javascript:void(0);" (click)="newsDetail(n)" data-bs-toggle="modal" data-bs-target="#newsModal"><div class="card">
+        <div class="card-body">
+          <div class="row align-items-start">
+          <div class="col-4">
+            <img class="border-0 img-thumbnail" src="{{news.image}}">
+          </div>
+          <div class="col-6 text-center">{{news.headline}}</div>
+        </div>
+        </div>
+      </div></a>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">{{topNewsDetail?.source}}</h1>
+        <p><small>{{topNewsDetail?.datetime * 1000 |date:'longDate'}}</small></p>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <h1>{{topNewsDetail?.headline}}</h1>
+          <p>{{topNewsDetail?.summary}}</p>
+          <p><small>For more details click <a href="{{topNewsDetail?.url}}" target="_blank">here</a></small></p>
+          <div class="card">
+            <div class="card-body">
+              <p>share</p>
+              <div>
+                <a class="twitter-share-button"
+                href="https://twitter.com/intent/tweet?text={{topNewsDetail?.headlineencode}} {{topNewsDetail?.urlencode}}" target="_blank">
+              <i class="fa fa-twitter"></i></a>
+              
+                <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="" data-size=""><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{topNewsDetail?.urlencode}}&src=sdkpreparse" class="fb-xfbml-parse-ignore">
+                  <i class="fa fa-facebook"></i>
+                </a>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -133,9 +198,8 @@
             <h4 >Money in Wallet: {{walletmoney}}</h4>
             <label for="inputEmail3" class="col-sm-2 col-form-label">Quantity: </label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" #quantity name="quuantity" ng-model="quuantity" required (input)="calculateBuyQuantity(quantity.value)" min="0" oninput="if(value<0)value=0;">
+              <input type="number" class="form-control" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" #quantity name="quuantity" ng-model="quuantity" required (input)="calculateBuyQuantity(quantity.value)" min="0" oninput="if(value<0)value=0;">
             </div>
-
             <h4 *ngIf="buytotal > walletmoney" style="color: red;">
               Not Enough Money in Wallet!
             </h4>
@@ -166,15 +230,90 @@
             <h4 >Money in Wallet: {{walletmoney}}</h4>
             <label for="inputEmail3" class="col-sm-2 col-form-label">Quantity: </label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" #quantitysell name="quantitysell" ng-model="quantitysell" required [disabled]="true" [value]="boughtQuantity">
+              <input type="number" class="form-control" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" #quantitysell name="quantitysell" ng-model="quantitysell" required [disabled]="true" [value]="boughtQuantity">
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <h4 class="align-baseline">Total: {{this.boughtQuantity * this.polygonAggsVw}} </h4>
-        <button type="button" class="btn btn-danger btn" (click)="sell();" data-bs-dismiss="modal" aria-label="Close">sell</button>
+        <button type="button" class="btn btn-success btn" (click)="sell();" data-bs-dismiss="modal" aria-label="Close">sell</button>
       </div>
     </div>
   </div>
+</div>
+
+
+<div class="container" *ngIf="chartsData?.length > 0 && tabs=='Charts'">
+  <div *ngIf="(chartoption | json) != '{}'">
+    <highcharts-chart 
+      [Highcharts]="Highcharts"
+      [options]="chartoption"
+      [constructorType]="chartConstructor"
+      style="width: 100%;  display: block;"
+    ></highcharts-chart>
+    </div>
+</div>
+
+<div class="container" *ngIf="insightsData?.length > 0 && tabs=='InSights'">
+  
+  <div class="container">
+    <div class="row justify-content-lg-center">
+      <div class="col-xl-auto text-center">
+        <h1><strong>Insider Sentiments</strong></h1>
+      </div>
+    </div>
+    <div class="row justify-content-xl-center">
+      <div class="col-lg-8">
+    <table class="table wd-100 text-center" >
+      <thead>
+        <tr>
+          <th scope="col">{{hostList['name']}}</th>
+          <th scope="col">MSPR</th>
+          <th scope="col">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Total</th>
+          <td>{{msprTotal}}</td>
+          <td>{{changeTotal}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Positive</th>
+          <td>{{msprPositive}}</td>
+          <td>{{changePositive}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Negative</th>
+          <td>{{msprNagtive}}</td>
+          <td>{{changeNagtive}}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div></div>
+
+  </div>
+
+  <div class="grid gap-3">
+    <div class="p-2 g-col-6">
+      <div *ngIf="(insightsoption | json) != '{}'">
+        <highcharts-chart 
+          [Highcharts]="Highcharts"
+          [options]="insightsoption"
+          style="width: 100%; height: 300px; display: block;"
+        ></highcharts-chart>
+      </div>
+    </div>
+    <div class="p-2 g-col-6">
+      <div *ngIf="(insightsoption | json) != '{}'">
+        <highcharts-chart 
+          [Highcharts]="Highcharts"
+          [options]="earningOption"
+          style="width: 100%; height: 300px; display: block;"
+        ></highcharts-chart>
+      </div>
+    </div>
+  </div>
+  
 </div>

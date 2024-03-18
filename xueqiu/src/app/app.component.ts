@@ -9,8 +9,6 @@ import { AppService } from './app.service';
 export class AppComponent implements OnInit {
   title = 'xueqiu';
   constructor(private appService: AppService) {}
-
-
   
   ngOnInit(): void {}
 }
